@@ -53,3 +53,17 @@ go run zabbix_init/main.go -host=3 -item=2 -zabbix=http://<zabbix ip> -user=Admi
 # 500×20item/s のメトリクス(float)を登録
 go run zabbix_sender/main.go -host=3 -item=2 -zabbix=<zabbix ip>
 ```
+
+
+# zabbix-compose
+
+テスト用のzqbbixサーバー立ち上げ用docker compose
+500host 20item/hostの登録と20host×10item/sのメトリクス登録できるようにチューニング済み
+
+
+```
+cd zabbix-compose
+docker-compose up -d
+```
+
+

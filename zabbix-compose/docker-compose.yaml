@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  zabbix:
+    image: zabbix/zabbix-server-mysql:alpine-5.0-latest
+    environment:
+      DB_SERVER_HOST: mysql
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: password
+      ZBX_CACHESIZE: 32M
+      ZBX_HISTORYCACHESIZE: 512M
+      ZBX_VALUECACHESIZE: 64M
+      ZBX_STARTPOLLERS: 20
+      ZBX_STARTDBSYNCERS: 20
+    ports:
+      - 10051:10051
+  zabbix-web:
+    image: zabbix/zabbix-web-apache-mysql:alpine-5.0-latest
+    environment:
+      ZBX_SERVER_HOST: zabbix
+      DB_SERVER_HOST: mysql
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: password
+      PHP_TZ: Asia/Tokyo
+    ports:
+      - 80:8080
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=1024M
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+        #cap_add:
+        #- SYS_ADMIN
+        #security_opt:
+        #- seccomp:unconfined
